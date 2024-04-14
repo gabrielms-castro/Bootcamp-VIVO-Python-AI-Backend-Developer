@@ -1,4 +1,4 @@
-# Resumos Python
+# Resumos Python :snake:
 
 ## Instalando Python:
 Dependendo da sua versão do Windows ou macOS, seu computador já possui Python instalado. 
