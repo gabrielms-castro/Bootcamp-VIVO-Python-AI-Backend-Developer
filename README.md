@@ -28,7 +28,7 @@ Prático e fácil para visualizar os outputs do seu código. Se quiser saber com
 
 Por último e não menos importante, meu preferido para meu projetos pessoais e que mais utilizo no trabalho:
 
-3.**[Visual Studio Code - VSCode](https://code.visualstudio.com/)**
+3. **[Visual Studio Code - VSCode](https://code.visualstudio.com/)**
 
 ## 3. Resumos:
 |Assunto|Status|Link|
