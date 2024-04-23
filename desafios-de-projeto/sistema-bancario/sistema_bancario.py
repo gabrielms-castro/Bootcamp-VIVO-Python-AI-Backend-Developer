@@ -67,8 +67,10 @@ while True:
     elif opcao == 3: #extrato
         print("[3] Extrato Selecionado.")
         print("==================== EXTRATO ====================")
+        
         for op in extrato:
             print(op, end="")
+            
         print(f"\nSaldo atual: R$ {saldo:.2f}\n")
         print("=================================================")
 
