@@ -13,4 +13,4 @@
 Atualizar os métodos que tratam as opções do menu para que funcionemcom as classes modeladas.
 
 **UML do Projeto:**
-<img src="desafios-de-projeto\sistema-bancario-v3\uml_desafio.png">
+<img src="https://github.com/gabrielms-castro/dio-python-ai-backend-developer/blob/main/desafios-de-projeto/sistema-bancario-v3/uml_desafio.png">
