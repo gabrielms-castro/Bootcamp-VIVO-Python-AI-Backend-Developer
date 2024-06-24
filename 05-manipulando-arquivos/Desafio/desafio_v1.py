@@ -1,7 +1,11 @@
 import textwrap
-from abc import ABC, abstractmethod, abstractclassmethod
+from abc import ABC, abstractmethod
 from datetime import datetime
 from pathlib import Path
+
+import pandas as pd
+
+frutas = ["pera", "maca", "banana", "jabuticaba"]
 
 ROOT_PATH = Path(__file__).parent
 
@@ -129,7 +133,11 @@ class ContaCorrente(Conta):
 
     def sacar(self, valor):
         numero_saques = len(
-            [transacao for transacao in self.historico.transacoes if transacao["tipo"] == Saque.__name__]
+            [
+                transacao
+                for transacao in self.historico.transacoes
+                if transacao["tipo"] == Saque.__name__
+            ]
         )
 
         excedeu_limite = valor > self._limite
@@ -176,14 +184,19 @@ class Historico:
 
     def gerar_relatorio(self, tipo_transacao=None):
         for transacao in self._transacoes:
-            if tipo_transacao is None or transacao["tipo"].lower() == tipo_transacao.lower():
+            if (
+                tipo_transacao is None
+                or transacao["tipo"].lower() == tipo_transacao.lower()
+            ):
                 yield transacao
 
     def transacoes_do_dia(self):
         data_atual = datetime.now().date()
         transacoes = []
         for transacao in self._transacoes:
-            data_transacao = datetime.strptime(transacao["data"], "%d-%m-%Y %H:%M:%S").date()
+            data_transacao = datetime.strptime(
+                transacao["data"], "%d-%m-%Y %H:%M:%S"
+            ).date()
             if data_atual == data_transacao:
                 transacoes.append(transacao)
         return transacoes
@@ -194,7 +207,7 @@ class Transacao(ABC):
     @abstractmethod
     def valor(self):
         pass
-    
+
     @classmethod
     @abstractmethod
     def registrar(self, conta):
@@ -235,11 +248,15 @@ def log_transacao(func):
     def envelope(*args, **kwargs):
         resultado = func(*args, **kwargs)
         data_hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        
-        # TODO: alterar a implementação para salvar em arquivo. 
-        with open(ROOT_PATH/'log.txt', 'a') as arquivo: # Se o arquivo existir, ele adicionará novas linhas ao fim do arquivo
-            arquivo.writelines(f"[{data_hora}] Função '{func.__name__}' executada com argumentos {args} e {kwargs}. Retornou {resultado}\n")
-        
+
+        # TODO: alterar a implementação para salvar em arquivo.
+        with open(
+            ROOT_PATH / "log.txt", "a"
+        ) as arquivo:  # Se o arquivo existir, ele adicionará novas linhas ao fim do arquivo
+            arquivo.writelines(
+                f"[{data_hora}] Função '{func.__name__}' executada com argumentos {args} e {kwargs}. Retornou {resultado}\n"                                                       
+            )
+
         return resultado
 
     return envelope
@@ -292,7 +309,7 @@ def depositar(clientes, valor):
 
 
 @log_transacao
-def sacar(clientes,valor):
+def sacar(clientes, valor):
     cpf = input("Informe o CPF do cliente: ")
     cliente = filtrar_cliente(cpf, clientes)
 
@@ -300,7 +317,6 @@ def sacar(clientes,valor):
         print("\n@@@ Cliente não encontrado! @@@")
         return
 
-    
     transacao = Saque(valor)
 
     conta = recuperar_conta_cliente(cliente)
@@ -349,9 +365,13 @@ def criar_cliente(clientes):
 
     nome = input("Informe o nome completo: ")
     data_nascimento = input("Informe a data de nascimento (dd-mm-aaaa): ")
-    endereco = input("Informe o endereço (logradouro, nro - bairro - cidade/sigla estado): ")
+    endereco = input(
+        "Informe o endereço (logradouro, nro - bairro - cidade/sigla estado): "
+    )
 
-    cliente = PessoaFisica(nome=nome, data_nascimento=data_nascimento, cpf=cpf, endereco=endereco)
+    cliente = PessoaFisica(
+        nome=nome, data_nascimento=data_nascimento, cpf=cpf, endereco=endereco
+    )
 
     clientes.append(cliente)
 
@@ -367,7 +387,9 @@ def criar_conta(numero_conta, clientes, contas):
         print("\n@@@ Cliente não encontrado, fluxo de criação de conta encerrado! @@@")
         return
 
-    conta = ContaCorrente.nova_conta(cliente=cliente, numero=numero_conta, limite=500, limite_saques=50)
+    conta = ContaCorrente.nova_conta(
+        cliente=cliente, numero=numero_conta, limite=500, limite_saques=50
+    )
     contas.append(conta)
     cliente.contas.append(conta)
 
@@ -389,8 +411,8 @@ def main():
 
         if opcao == "d":
             valor = float(input("Informe o valor do depósito: "))
-            depositar(clientes,valor)
-            
+            depositar(clientes, valor)
+
         elif opcao == "s":
             valor = float(input("Informe o valor do saque: "))
             sacar(clientes, valor)
@@ -412,7 +434,9 @@ def main():
             break
 
         else:
-            print("\n@@@ Operação inválida, por favor selecione novamente a operação desejada. @@@")
+            print(
+                "\n@@@ Operação inválida, por favor selecione novamente a operação desejada. @@@"
+            )
 
 
 main()
