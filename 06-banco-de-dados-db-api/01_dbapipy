@@ -77,3 +77,14 @@ resultados = cursor.fetchall()
 for linha in resultados:
     cliente = dict(linha)
     print(f"Nome:\t{cliente['nome']}\nE-mail:\t{cliente['email']}\n")
+    
+# Gerenciando transações
+conexao = sqlite3.connect(ROOT_PATH / "clientes.db")
+cursor = conexao.cursor()
+cursor.row_factory = sqlite3.Row
+try:
+    cursor.execute = ('SELECT * FROM clientes WHERE id=?;',(1,))
+    conexao.commit()
+except Exception as err:
+    print(f"Ocorreu um erro:\t{err}")
+    conexao.rollback()
