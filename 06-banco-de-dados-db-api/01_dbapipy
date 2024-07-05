@@ -1,0 +1,79 @@
+import sqlite3
+from pathlib import Path
+
+ROOT_PATH = Path(__file__).parent
+
+# Conectando ao DB do sqlite
+conexao = sqlite3.connect(ROOT_PATH / "clientes.db")
+
+
+# Estabelecendo um cursor para executar comandos
+cursor = conexao.cursor()
+
+
+# Criando uma tabela
+cursor.execute(
+    "CREATE TABLE IF NOT EXISTS clientes (id INTEGER PRIMARY KEY AUTOINCREMENT, nome VARCHAR(100), email VARCHAR(100))"
+)
+
+
+# Inserindo dados da tabela clientes e comitando a operação
+dados = ("Giovanna", "giovanna@email.com.br") # Utilize uma tupla de valores para inserir os dados no VALUES
+cursor.execute("INSERT INTO clientes (nome, email) VALUES (?, ?);", dados)
+conexao.commit()
+
+dados = ("Gabriel", "gabriel@email.com.br") # Utilize uma tupla de valores para inserir os dados no VALUES
+cursor.execute("INSERT INTO clientes (nome, email) VALUES (?, ?);", dados)
+conexao.commit()
+
+
+# Atualizando um Registro
+dados = ("Gabriel Castro", "gcastro@email.com.br", 1)
+cursor.execute("UPDATE clientes SET nome=?, email=? WHERE id=?", dados) # Sempre utilize WHERE para não atualizar a tabela inteira
+conexao.commit()
+
+
+# Excluindo um registro
+cursor.execute("DELETE FROM clientes WHERE id=?", (1,))
+conexao.commit()
+
+
+# Inserindo registros em lote(batch)
+dados = [
+    ("João", "joao@email.com.br"),
+    ("Maria", "maria@email.com.br"),
+    ("Pedro", "pedro@email.com.br"),
+    ("Ana", "ana@email.com.br"),
+]  # Utilize uma lista de tuplas para inserir dados em lote
+cursor.executemany("INSERT INTO clientes (nome, email) VALUES (?,?);", dados)
+conexao.commit()
+
+
+# Recuperando um registro
+cursor.execute("SELECT * FROM clientes WHERE id=?", (3,))
+resultado = cursor.fetchone()
+print(resultado)
+
+
+# Recuperando todos os registros
+cursor.execute("SELECT * FROM clientes")
+resultados = cursor.fetchall()
+for linha in resultados:
+    print(linha)
+
+
+# Buscando um registro usando row_factory
+cursor.row_factory = sqlite3.Row
+cursor.execute('SELECT * FROM clientes WHERE id=?;',(2,))
+cliente = cursor.fetchone()
+print(dict(cliente))
+print(f"Nome:\t{cliente["nome"]}\nE-mail:\t{cliente['email']}")
+
+
+# Buscando todos os registros usando row_factory
+cursor.row_factory = sqlite3.Row
+cursor.execute("SELECT * FROM clientes")
+resultados = cursor.fetchall()
+for linha in resultados:
+    cliente = dict(linha)
+    print(f"Nome:\t{cliente['nome']}\nE-mail:\t{cliente['email']}\n")
