@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-app = FastAPI(title='WorkoutApi')
+app = FastAPI(title="WorkoutApi")
 
 # if __name__ == '__main__':
 #     import uvicorn
