@@ -2,6 +2,7 @@ from datetime import datetime
 
 from sqlalchemy import DateTime, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from workoutapi.contrib.models import BaseModel
 
 
@@ -12,5 +13,4 @@ class CentroTreinamentoModel(BaseModel):
     nome: Mapped[str] = mapped_column(String(20), unique=True, nullable=False)
     proprietario: Mapped[str] = mapped_column(String(30), nullable=False)
     endereco: Mapped[str] = mapped_column(String(60), nullable=False)
-    atleta: Mapped["AtletaModel"] = relationship(back_populates="categoria")
-    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    atleta: Mapped["AtletaModel"] = relationship(back_populates="centro_treinamento")

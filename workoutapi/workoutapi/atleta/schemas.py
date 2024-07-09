@@ -1,7 +1,8 @@
 from typing import Annotated
 
 from pydantic import Field, PositiveFloat
-from workoutapi.contrib.schemas import BaseSchema
+
+from workoutapi.contrib.schemas import BaseSchema, OutMixIn
 
 
 class Atleta(BaseSchema):
@@ -19,3 +20,12 @@ class Atleta(BaseSchema):
     sexo: Annotated[
         str, Field(description="Altura do Atleta", example="M", max_length=1)
     ]
+
+
+class AtletaIn(Atleta):
+    pass
+
+
+class AtletaOut(AtletaIn, OutMixIn):
+    pass
+ 
