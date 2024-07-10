@@ -1,7 +1,6 @@
 from uuid import uuid4
 
-from fastapi import APIRouter, Body, status
-from fastapi import HTTPException
+from fastapi import APIRouter, Body, status, HTTPException
 from pydantic import UUID4
 from sqlalchemy.future import select
 
